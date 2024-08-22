@@ -1,22 +1,22 @@
 trigger TriggerNewAccounts on Account (after insert, after delete) {
     for (Account acc : Trigger.new) {
-        String AccName = acc.Name;
+        String IdOwner = acc.OwnerId;
         
         if (Trigger.isInsert) {
             Integer recordCound = Trigger.new.size();
-            Account[] IdOwner = [SELECT OwnerId FROM Account WHERE Name=:AccName];
-            String IdOwnerCasting = IdOwner[0].OwnerId;
-            User[] EmailOwner = [SELECT Email FROM User WHERE Id=:IdOwnerCasting];
-            String EmailCasting = EmailOwner[0].Id;
-            EmailWhenAccountCreated.sendMail(EmailCasting, 'New Account Created', recordCound + 'Account were inserted');
+            User[] EmailOwner = [SELECT Email FROM User WHERE Id=:IdOwner];
+            if (!EmailOwner.isEmpty()) {
+                String EmailCasting = EmailOwner[0].Email;
+                EmailWhenAccountCreated.sendMail(EmailCasting, 'New Account Created', recordCound + 'Account were inserted');
+            }
         }
         else if (Trigger.isDelete) {
-            Integer recordCound = Trigger.old.size();
-            Account[] IdOwner = [SELECT OwnerId FROM Account WHERE Name=:AccName];
-            String IdOwnerCasting = IdOwner[0].OwnerId;
-            User[] EmailOwner = [SELECT Email FROM User WHERE Id=:IdOwnerCasting];
-            String EmailCasting = EmailOwner[0].Id;
-            EmailWhenAccountCreated.sendMail(EmailCasting, 'Account Deleted', recordCound + 'Account were deleted');
+            Integer recordCound = Trigger.new.size();
+            User[] EmailOwner = [SELECT Email FROM User WHERE Id=:IdOwner];
+            if (!EmailOwner.isEmpty()) {
+                String EmailCasting = EmailOwner[0].Email;
+                EmailWhenAccountCreated.sendMail(EmailCasting, 'Account Deleted', recordCound + 'Account were deleted');
+            }
         }
     }
 
