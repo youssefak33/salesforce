@@ -3,7 +3,7 @@ public with sharing class Callout {
     public static void MakeCallout() {
         HttpRequest request = new HttpRequest();
         String endpoint = 'https://api.hubapi.com/crm/v3/objects/contacts?limit=10&properties=email,firstname,lastname';
-        String token = 'pat-na1-243f87fc-432f-4148-ad4c-ffb8505ad7d1';
+        String token = '';
 
         request.setEndPoint(endpoint);
         request.setMethod('GET');
