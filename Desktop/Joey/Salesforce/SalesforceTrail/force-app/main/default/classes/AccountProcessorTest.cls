@@ -1,7 +1,7 @@
 @isTest
 private class AccountProcessorTest {
     @isTest
-    private static void AccountProcessorTest() {
+    private static void countContactsTest() {
 
         List<Account> accounts = new List<Account>();
         for (Integer i=0; i<300; i++) {
